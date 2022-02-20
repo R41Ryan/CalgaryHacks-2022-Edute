@@ -1,7 +1,6 @@
 from typing import Callable
 from django.db import models
 from django.db.models.deletion import CASCADE, SET_NULL
-from sklearn.metrics import pair_confusion_matrix
 
 
 # Create your models here.
