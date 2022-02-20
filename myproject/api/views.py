@@ -20,24 +20,36 @@ class AccountView (APIView):
         return Response (serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AccountDetail (APIView):
-    def get(self, request, id, format=None):
-        account = Account.objects.get (idSchool=id)
+    def get(self, request, name, format=None):
+        account = Account.objects.get (school=name, many=True)
         serializer = AccountSerializer(account)
         return Response (serializer.data)
 
-    def put(self, request, id, format=None):
-        account = Account.objects.filter(idSchool=id).first()
-        serializer = AccountSerializer(account, data=request.data)
-        print(account)
-        if serializer.is_valid ( ):
-            print(request.data)
+    def delete(self, request, name, format=None):
+        account = Account.objects.filter (school=name)
+        account.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class AccountDetailBeta(APIView):
+    def get(self, request, name, id, format=None):
+        account = Account.objects.get(school=name)
+        account2 = account.filter(idSchool=id).first()
+        serializer = Account(account2)
+        return Response(serializer.data)
+
+    def put(self, request, name, id, format=None):
+        account = Account.objects.filter(postingId=name)
+        account2 = account.filter(idPassenger=id).first()
+        serializer = AccountSerializer(account2, data=request.data)
+        if serializer.is_valid():
             serializer.save()
             return Response (serializer.data)
         return Response (serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id, format=None):
-        account = Account.objects.filter (idSchool=id)
-        account.delete()
+    def delete(self, request, name, id, format=None):
+        account = Account.objects.filter(postingId=name)
+        account2 = account.filter(idPassenger=id)
+        account2.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class DriverView (APIView):

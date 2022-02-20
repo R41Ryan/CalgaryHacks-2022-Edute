@@ -2,7 +2,8 @@ from django.urls import path,include
 from . import views
 urlpatterns = [
     path('account/', views.AccountView.as_view()),
-    path('account/<int:id>', views.AccountDetail.as_view()),
+    path('account/<str:name>', views.AccountDetail.as_view()),
+    path('account/<str:name>/$<int:id>', views.AccountDetailBeta.as_view()),
     path('driver/', views.DriverView.as_view()),
     path('driver/<int:id>', views.DriverDetail.as_view()),
     path('posting/', views.PostingView.as_view()),

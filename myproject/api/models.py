@@ -6,18 +6,21 @@ from django.db.models.deletion import CASCADE, SET_NULL
 # Create your models here.
 
 class Account(models.Model):
-    idSchool = models.IntegerField(primary_key=True)
+    accountId = models.AutoField(primary_key=True)
+    school = models.CharField(max_length=255)
+    idSchool = models.IntegerField()
     phoneNum = models.IntegerField()
     imagePath = models.CharField(max_length=255)
 
     class Meta:
         app_label='api'
+        unique_together = ("school", "idSchool")
 
     def __str__(self):
-        return str(self.idSchool)
+        return str(self.accountId)
 
 class Driver(models.Model):
-    idSchool = models.OneToOneField(Account, primary_key=True, on_delete=CASCADE, related_name='driverAccountId')
+    accountId = models.OneToOneField(Account, primary_key=True, on_delete=CASCADE, related_name='driverAccountId')
     licenseNum = models.IntegerField()
     insurancePolicyNum = models.IntegerField()
     driverHistoryFilePath = models.CharField(max_length=255)
@@ -26,7 +29,7 @@ class Driver(models.Model):
         app_label='api'
 
     def __str__(self):
-        return str(self.idSchool)
+        return str(self.accountId)
 
 class Posting(models.Model):
     postingId = models.AutoField(primary_key=True)
@@ -62,6 +65,7 @@ class PostingPassenger(models.Model):
 
     class Meta:
         app_label='api'
+        unique_together = ("postingId", "idPassenger")
 
     def __str__(self):
         return str(self.postingId) + " " + str(self.idPassenger)
