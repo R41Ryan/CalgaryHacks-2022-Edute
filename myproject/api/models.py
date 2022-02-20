@@ -8,7 +8,7 @@ from django.db.models.deletion import CASCADE, SET_NULL
 class Account(models.Model):
     idSchool = models.IntegerField(primary_key=True)
     phoneNum = models.IntegerField()
-    image = models.ImageField(upload_to='studentImages')
+    imagePath = models.CharField(max_length=255)
 
     class Meta:
         app_label='api'
@@ -20,7 +20,7 @@ class Driver(models.Model):
     idSchool = models.OneToOneField(Account, primary_key=True, on_delete=CASCADE, related_name='driverAccountId')
     licenseNum = models.IntegerField()
     insurancePolicyNum = models.IntegerField()
-    driverHistoryFilePath = models.FileField(upload_to="driverHistory")
+    driverHistoryFilePath = models.CharField(max_length=255)
 
     class Meta:
         app_label='api'
